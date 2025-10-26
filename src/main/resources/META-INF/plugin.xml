@@ -1,0 +1,9 @@
+<idea-plugin>
+    <id>com.example.flutterassetsmanager</id>
+    <name>Flutter Assets Manager</name>
+    <vendor>Vishwet Nadimetla</vendor>
+    <description>Simplifies asset management for Flutter projects.</description>
+    <depends>com.intellij.modules.platform</depends>
+<!--    <depends>io.flutter</depends>-->
+<!--    <depends>com.jetbrains.dart</depends> &lt;!&ndash; Use full ID for Dart &ndash;&gt;-->
+</idea-plugin>
