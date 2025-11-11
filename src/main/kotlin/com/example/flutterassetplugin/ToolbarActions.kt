@@ -1,11 +1,10 @@
-package com.example.flutterassetsmanager
+package com.example.flutterassetplugin
 
 import com.intellij.openapi.actionSystem.*
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.DumbAwareAction
 import com.intellij.openapi.util.IconLoader
 import javax.swing.Icon
-import javax.swing.JComponent
 
 class RegenerateAssetsAction : DumbAwareAction("Regenerate Assets", "Regenerate asset references", AllIcons.Actions.Refresh) {
     override fun actionPerformed(e: AnActionEvent) {

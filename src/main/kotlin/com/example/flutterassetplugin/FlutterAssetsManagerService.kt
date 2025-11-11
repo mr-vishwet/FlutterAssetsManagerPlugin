@@ -1,6 +1,5 @@
 package com.example.flutterassetplugin
 
-import com.example.flutterassetsmanager.PluginToolbar
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.diagnostic.Logger

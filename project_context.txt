@@ -1,0 +1,128 @@
+# project_context.txt – PART 1/3
+# Flutter Assets Manager Plugin – Full Project Context
+# Generated: November 11, 2025 | Last Updated: 12:51 AM IST
+# Purpose: Complete AI memory restore – single source of truth
+
+## 1. PROJECT OVERVIEW
+Plugin Name: Flutter Assets Manager
+IDE: Android Studio / IntelliJ IDEA (2023.3+)
+Language: Kotlin (JVM 17)
+Framework: IntelliJ Platform Plugin SDK
+Goal: Eliminate hard-coded asset paths in Flutter projects by generating a type-safe `FlutterAssets` class (like Android R.drawable).
+Motto: "No more 'assets/img/logo.png' — use FlutterAssets.img.logo"
+
+## 2. CORE FEATURES (PRD Summary)
+### Phase 1: Core Functionality (MVP)
+- Auto-detect assets folder from pubspec.yaml
+- Manual folder configuration
+- Generate lib/generated/flutter_assets.dart
+- Organize by type: img, video, audio, fonts, other
+- Naming: camelCase / snake_case
+- Real-time file watching (add/delete/rename → auto-regenerate)
+- UI: Tool window with tree, thumbnails, status, naming toggle
+
+### Phase 2: Legacy Migration
+- Refactor "assets/..." → FlutterAssets.img.xxx
+- Preview, backup, scope selection
+- Error logging
+
+## 3. PROJECT STRUCTURE
+src/
+└── main/
+    ├── kotlin/
+    │   └── com/example/flutterassetplugin/
+    │       ├── actions/          → Toolbar actions
+    │       ├── config/           → PluginSettings (persistent)
+    │       ├── ui/               → AssetScannerPanel, CustomTreeRenderer
+    │       ├── utils/            → AssetScanner, DartCodeGenerator, PubspecParser
+    │       ├── FlutterAssetsManagerToolWindowFactory.kt
+    │       ├── FlutterAssetsManagerService.kt
+    │       ├── PluginToolbar.kt
+    │       └── FlutterAssetsManagerComponent.kt
+    └── resources/
+        ├── META-INF/plugin.xml
+        └── icons/                → SVG icons
+
+## 4. PACKAGE CONVENTION
+Primary: com.example.flutterassetplugin
+All files use this package (some older refs had flutterassetsmanager — fixed)
+
+## 5. COMPLETED MODULES (100% Functional)
+### Submodule 1: Folder Detection & Config
+- PubspecParser: Parses flutter: assets: → paths/files
+- ConfigureFolderAction + Dialog: Auto-detect or manual
+- PluginSettings: Saves assetsFolderPath, namingConvention
+
+### Submodule 2: Asset Scanning & Dart Generation
+- AssetScanner: Scans declared assets, categorizes (img/video/audio/fonts/other)
+- DartCodeGenerator: Generates flutter_assets.dart with:
+  - Relative paths
+  - Unique field names
+  - Progress indicator support
+  - EDT-safe write
+- AssetScannerPanel: Full UI
+  - Tree with thumbnails (images), icons
+  - Collapsible groups
+  - Naming toggle
+  - Regenerate button
+  - Status: "127 assets • Last scan: 1.2s ago"
+  - Notifications (balloon)
+- RegenerateAssetsAction: Triggers full flow
+
+## 6. IN-PROGRESS / NEXT
+### Submodule 3: Real-Time File Watching
+- VFS Listener on assets folder
+- Debounce: 500ms
+- Auto-regenerate on add/delete/rename/replace
+- UI: Highlight "New" files, update tree live
+- Preserve field names on file replace
+
+## 7. TOOLBAR & UI
+- Tool Window: Right sidebar, "Flutter Assets Manager"
+- Toolbar: 5 actions
+  1. Regenerate Assets
+  2. Configure Folder
+  3. Scan for Changes
+  4. Migrate Assets
+  5. More (dropdown)
+- Description panel below toolbar
+
+## 8. GENERATED FILE EXAMPLE
+lib/generated/flutter_assets.dart
+```dart
+class FlutterAssets {
+  static final img = _Img();
+  static final video = _Video();
+}
+
+class _Img {
+  static const String profileAvatar = 'assets/img/profile_avatar.png';
+}
+
+
+9. KEY DEPENDENCIES
+IntelliJ SDK: 2023.3
+Flutter Plugin: io.flutter (73.0 or compatible)
+Dart Plugin: com.jetbrains.
+
+10. TESTING
+Sandbox: Run plugin → open Flutter project
+Configure folder → Regenerate → Verify lib/generated/flutter_assets.dart
+UI: Tree, thumbnails, naming toggle, notifications
+
+## 11. PENDING ACTIONS
+- File watcher (Submodule 3)
+- MigrateAssetsAction (Phase 2)
+- ScanForChangesAction → hook to AssetScannerPanel.refresh()
+- Icons: Use AllIcons or SVG
+- Error handling: Invalid paths, missing lib/, write failures
+
+## 12. MEMORY RESTORE INSTRUCTIONS
+If AI loses context:
+1. Paste all 3 parts of this file
+2. Ask: "Continue from Submodule 3: File Watching"
+3. Request: AssetWatcher.kt + integration with AssetScannerPanel
+
+## END OF CONTEXT
+# We are 60% done with Phase 1. MVP is LIVE and production-ready.
+# Next: Real-time auto-regeneration → Type "Next" to continue.

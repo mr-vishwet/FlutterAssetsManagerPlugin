@@ -1,7 +1,6 @@
 package com.example.flutterassetplugin.actions
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.DefaultActionGroup
 
 class ActionsDropdownAction : AnAction("Actions") {
     override fun actionPerformed(e: AnActionEvent) {

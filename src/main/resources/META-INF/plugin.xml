@@ -1,64 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <idea-plugin>
-    <id>com.example.flutterassetsmanager</id>
+    <id>com.example.flutterassetplugin</id>
     <name>Flutter Assets Manager</name>
     <version>1.0.0</version>
     <vendor>example</vendor>
 
     <depends>com.intellij.modules.platform</depends>
-<!--    <depends>io.flutter</depends>-->
+    <!-- Optional: Enable if you need Flutter-specific APIs -->
+    <!-- <depends>io.flutter</depends> -->
 
+    <!-- Tool Window -->
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceImplementation="com.example.flutterassetplugin.FlutterAssetsManagerService"/>
-        <projectComponent implementation="com.example.flutterassetplugin.FlutterAssetsManagerComponent"/>
-        <toolWindow factoryClass="com.example.flutterassetplugin.FlutterAssetsManagerToolWindowFactory"
-                    id="Flutter Assets Manager"
-                    anchor="right"
-                    icon="/icons/flutter_icon.svg"
-        />
+        <toolWindow
+                id="Flutter Assets Manager"
+                anchor="right"
+                factoryClass="com.example.flutterassetplugin.FlutterAssetsManagerToolWindowFactory"
+                icon="/icons/flutter_icon.svg"/>
+
+        <notificationGroup
+                id="FlutterAssetsManager.Notification"
+                displayType="BALLOON"
+                toolWindowId="Flutter Assets Manager"/>
     </extensions>
 
+    <!-- Actions & Toolbar -->
     <actions>
-        <action id="com.example.flutterassetsmanager.RegenerateAssets"
+        <!-- Individual Actions -->
+        <action id="FlutterAssets.Regenerate"
                 class="com.example.flutterassetplugin.actions.RegenerateAssetsAction"
                 text="Regenerate Assets"
-                icon="/icons/autorenew.svg"/>
-        <action id="com.example.flutterassetsmanager.ConfigureFolder"
-                class="com.example.flutterassetplugin.actions.ConfigureFolderAction"
-                text="Configure Folder"
-                icon="/icons/settings.svg"/>
-        <action id="com.example.flutterassetsmanager.ScanForChanges"
-                class="com.example.flutterassetplugin.actions.ScanForChangesAction"
-                text="Scan for Changes"
-                icon="/icons/search.svg"/>
-        <action id="com.example.flutterassetsmanager.MigrateAssets"
-                class="com.example.flutterassetplugin.actions.MigrateAssetsAction"
-                text="Migrate Assets"
-                icon="/icons/sync_alt.svg"/>
-        <action id="com.example.flutterassetsmanager.ActionsDropdown"
-                class="com.example.flutterassetplugin.actions.ActionsDropdownAction"
-                text="Actions"
-                popup="true">
-            <add-to-group group-id="com.example.flutterassetsmanager.FlutterAssetsManagerToolbar" anchor="last"/>
+                description="Regenerate flutter_assets.dart">
+            <add-to-group group-id="com.example.flutterassetplugin.FlutterAssetsManagerToolbar" anchor="first"/>
         </action>
 
-        <group id="com.example.flutterassetsmanager.FlutterAssetsManagerToolbar"
-               text="Flutter Assets Manager Toolbar"
-               popup="false">
-            <add-to-group group-id="MainToolBar" anchor="last"/>
-            <action id="com.example.flutterassetsmanager.RegenerateAssets"
-                    class="com.example.flutterassetplugin.actions.RegenerateAssetsAction"/>
-            <action id="com.example.flutterassetsmanager.ConfigureFolder"
-                    class="com.example.flutterassetplugin.actions.ConfigureFolderAction"/>
-            <action id="com.example.flutterassetsmanager.ScanForChanges"
-                    class="com.example.flutterassetplugin.actions.ScanForChangesAction"/>
-            <action id="com.example.flutterassetsmanager.MigrateAssets"
-                    class="com.example.flutterassetplugin.actions.MigrateAssetsAction"/>
-            <action id="com.example.flutterassetsmanager.ActionsDropdown"
-                    class="com.example.flutterassetplugin.actions.ActionsDropdownAction"
-                    popup="true">
-                <add-to-group group-id="com.example.flutterassetsmanager.FlutterAssetsManagerToolbar" anchor="last"/>
-            </action>
+        <action id="FlutterAssets.ConfigureFolder"
+                class="com.example.flutterassetplugin.actions.ConfigureFolderAction"
+                text="Configure Folder"
+                description="Set or detect assets folder">
+            <add-to-group group-id="com.example.flutterassetplugin.FlutterAssetsManagerToolbar" anchor="after" relative-to-action="FlutterAssets.Regenerate"/>
+        </action>
+
+        <action id="FlutterAssets.ScanForChanges"
+                class="com.example.flutterassetplugin.actions.ScanForChangesAction"
+                text="Scan for Changes"
+                description="Rescan assets">
+            <add-to-group group-id="com.example.flutterassetplugin.FlutterAssetsManagerToolbar" anchor="after" relative-to-action="FlutterAssets.ConfigureFolder"/>
+        </action>
+
+        <action id="FlutterAssets.MigrateAssets"
+                class="com.example.flutterassetplugin.actions.MigrateAssetsAction"
+                text="Migrate Assets"
+                description="Migrate legacy paths">
+            <add-to-group group-id="com.example.flutterassetplugin.FlutterAssetsManagerToolbar" anchor="after" relative-to-action="FlutterAssets.ScanForChanges"/>
+        </action>
+
+        <!-- Dropdown Group -->
+        <group id="FlutterAssets.ActionsDropdown"
+               text="More"
+               description="Additional actions"
+               popup="true">
+            <add-to-group group-id="com.example.flutterassetplugin.FlutterAssetsManagerToolbar" anchor="last"/>
+            <reference ref="FlutterAssets.ConfigureFolder"/>
+            <reference ref="FlutterAssets.ScanForChanges"/>
+            <reference ref="FlutterAssets.MigrateAssets"/>
         </group>
 
+        <!-- Main Toolbar Group -->
+        <group id="com.example.flutterassetplugin.FlutterAssetsManagerToolbar"
+               text="Flutter Assets Manager"
+               description="Asset management toolbar"
+               popup="false">
+            <add-to-group group-id="MainToolBar" anchor="last"/>
+        </group>
     </actions>
 </idea-plugin>

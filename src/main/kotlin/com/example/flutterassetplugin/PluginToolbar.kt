@@ -1,4 +1,4 @@
-package com.example.flutterassetsmanager
+package com.example.flutterassetplugin
 
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionToolbar
